@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
-const fetch = require('node-fetch');
+// use dynamic import for node-fetch in commonjs
+const fetch = (...args) => import('node-fetch').then(mod => mod.default(...args));
 
 // GET all walk requests (for walkers to view)
 router.get('/', async (req, res) => {
