@@ -132,7 +132,6 @@
         }
 
         onMounted(async () => {
-          // Fetch owner's dogs
           try {
             const res = await fetch('/api/users/mydogs');
             if (res.ok) {
