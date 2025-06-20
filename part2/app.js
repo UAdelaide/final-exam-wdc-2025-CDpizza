@@ -12,7 +12,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'dogwalksecret',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // Set to true if using HTTPS
+  cookie: { secure: false } // set to true if using HTTPS
 }));
 
 // Routes
