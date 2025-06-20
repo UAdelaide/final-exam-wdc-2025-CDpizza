@@ -126,7 +126,7 @@
         async function logout() {
           try {
             await fetch('/api/users/logout', { method: 'POST', credentials: 'same-origin' });
-            // Redirect to login page
+            // redirect to login page
             window.location.href = '/index.html';
           } catch (err) {
             alert('Logout failed');
