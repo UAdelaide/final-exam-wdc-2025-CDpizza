@@ -59,15 +59,15 @@ INSERT INTO Users (username, email, password_hash, role) VALUES
 ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
 ('carol123', 'carol@example.com', 'hashed789', 'owner'),
 ('pizzawalker', 'pizza@example.com', 'hashedzxc', 'walker'),
-('vscodeowner', 'vscode@example.com', 'hashedxyz', 'owner');
+('vscodeowner', 'vscode@example.com', 'hasheasd', 'owner');
 
 
 INSERT INTO Dogs (owner_id, name, size) VALUES
 ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Max', 'medium'),
 ((SELECT user_id FROM Users WHERE username = 'carol123'), 'Bella', 'small'),
 ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Rocky', 'large'),
-((SELECT user_id FROM Users WHERE username = 'eveowner'), 'Luna', 'medium'),
-((SELECT user_id FROM Users WHERE username = 'eveowner'), 'Charlie', 'small');
+((SELECT user_id FROM Users WHERE username = 'vscodeowner'), 'Luna', 'medium'),
+((SELECT user_id FROM Users WHERE username = 'vscodeowner'), 'Charlie', 'small');
 
 
 INSERT INTO WalkRequests (dog_id, requested_time, duration_minutes, location, status) VALUES
