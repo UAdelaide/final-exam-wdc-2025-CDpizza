@@ -8,43 +8,53 @@
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body class="bg-light">
-
   <div id="app">
-    <div class="login-container">
-      <h1>Welcome to the Dog</h1>
-      <h1>Walking Service!</h1>
+    <main>
+      <section>
+        <h1>Dog Walking Service</h1>
+        <h3>Login</h3>
 
-      <form @submit.prevent="login">
+        <form @submit.prevent="login">
+          <div class="post">
+            <div class="content">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                v-model="username"
+                required
+              >
+            </div>
+
+            <div class="content">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                v-model="password"
+                required
+              >
+            </div>
+
+            <div v-if="error" class="post">
+              <div class="content">
+                {{ error }}
+              </div>
+            </div>
+
+            <div class="content">
+              <button type="submit">Login</button>
+            </div>
+          </div>
+        </form>
+
         <div class="post">
           <div class="content">
-            <label for="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              v-model="username"
-              required
-            >
+            <small>Test users: alice123 (owner), bobwalker (walker), carol123 (owner)</small>
           </div>
-
-          <div class="content">
-            <label for="password">Password</label>
-            <input 
-              type="password"
-              id="password"
-              v-model="password"
-              required
-            >
-          </div>
-
-          <div v-if="error" class="error-message">
-            {{ error }}
-          </div>
-
-          <button type="submit">Login</button>
         </div>
-      </form>
-
-    </div>
+      </section>
+    </main>
   </div>
 
   <script>
