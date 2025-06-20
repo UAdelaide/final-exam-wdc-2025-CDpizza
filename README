@@ -1,15 +1,64 @@
-To test your computer setup.
-1. Checkout this repository
-2. Open a terminal window
-3. Change into the "starthere" folder:
-   cd starthere
-4. Run:
-   npm install
-5. Start a SQL Server:
-   service mysql start
-6. Run a server:
-   npm start
-7. Browse to localhost:8080 and the result will be a json formatted query of the database:
-[{"id":1,"title":"1984","author":"George Orwell"},{"id":2,"title":"To Kill a Mockingbird","author":"Harper Lee"},{"id":3,"title":"Brave New World","author":"Aldous Huxley"}]
+# Dog Walking Service Final Exam
 
-8. If this worked, then congratulations you are ready to start the exam.
+This project consists of two parts:
+- **Part 1**: API server providing dogs data (runs on port 3001)
+- **Part 2**: Frontend application displaying the dogs table (runs on port 3000)
+
+## Setup Instructions
+
+### Prerequisites
+- Node.js installed
+- MySQL server running (start with: `service mysql start`)
+
+### Part 1 (API Server)
+1. Navigate to part1 directory:
+   ```bash
+   cd part1/Node.js/Express/app
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the server:
+   ```bash
+   npm start
+   ```
+   - Server will run on http://localhost:3001
+   - API endpoint available at: http://localhost:3001/api/dogs
+
+### Part 2 (Frontend)
+1. Navigate to part2 directory:
+   ```bash
+   cd part2
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the server:
+   ```bash
+   npm start
+   ```
+   - Frontend will run on http://localhost:3000
+   - Shows login form and dogs table with random photos
+
+## Features
+
+### Dogs Table
+- Displays all registered dogs from the database
+- Shows: Dog ID, Name, Size, Owner ID, and random dog photos
+- Photos fetched from dogs.ceo API
+- Table appears below the login form
+
+## Database
+- MySQL database: `DogWalkService`
+- Tables: Users, Dogs, WalkRequests, WalkApplications, WalkRatings
+- Sample data automatically loaded from `dogwalks.sql`
+
+## API Endpoints
+- `GET /api/dogs` - Returns all dogs with their details
+
+## Notes
+- Part 1 must be running before Part 2 can display the dogs table
+- Random dog photos are fetched from the external dogs.ceo API
+- CORS is enabled in Part 1 to allow cross-origin requests from Part 2
