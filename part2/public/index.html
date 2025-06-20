@@ -161,6 +161,10 @@
           } finally {
             this.dogsLoading = false;
           }
+        },
+        onImageError(event) {
+          console.error('image failed to load:', event.target.src);
+          // you could set a fallback image here if needed
         }
       }
     }).mount('#app');
