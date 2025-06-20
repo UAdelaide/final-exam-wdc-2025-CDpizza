@@ -22,8 +22,11 @@
       <div class="card-body">
         <form @submit.prevent="submitWalkRequest">
           <div class="mb-3">
-            <label class="form-label">Dog ID</label>
-            <input v-model="form.dog_id" type="number" class="form-control" required>
+            <label class="form-label">Select Your Dog</label>
+            <select v-model="form.dog_id" class="form-control" required>
+              <option disabled value="">-- Choose a dog --</option>
+              <option v-for="dog in dogs" :key="dog.dog_id" :value="dog.dog_id">{{ dog.name }}</option>
+            </select>
           </div>
           <div class="mb-3">
             <label class="form-label">Requested Date & Time</label>
@@ -78,7 +81,7 @@
           duration_minutes: '',
           location: ''
         });
-
+        const dogs = ref([]);
         const walks = ref([]);
         const message = ref('');
         const error = ref('');
@@ -128,7 +131,14 @@
           }
         }
 
-        onMounted(() => {
+        onMounted(async () => {
+          // Fetch owner's dogs
+          try {
+            const res = await fetch('/api/users/mydogs');
+            if (res.ok) {
+              dogs.value = await res.json();
+            }
+          } catch (err) {}
           loadWalks();
         });
 
@@ -138,7 +148,8 @@
           message,
           error,
           submitWalkRequest,
-          logout
+          logout,
+          dogs
         };
       }
     }).mount('#app');
