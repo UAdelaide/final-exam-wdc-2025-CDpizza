@@ -10,3 +10,4 @@ Very important!!!!!!!
     - Set the part2 port 3001 .By default, port 8080 will conflict with part1.
 - Use the command "PORT=3000 " and "npm start" to open the web
     - Premise: Transfer app files
+    - "cd part1 ", "cd Node.js" 
