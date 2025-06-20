@@ -7,45 +7,50 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
-<body>
+<body >
   <div id="app">
-    <main>
-      <div class="post" style="max-width:400px;margin:40px auto;">
-        <div class="content" style="text-align:center;">
-          <h1 style="color:rgb(0,120,230);margin-bottom:0;">Welcome to the Dog</h1>
-          <h1 style="color:rgb(0,120,230);margin-top:0;">Walking Service!</h1>
-        </div>
-        <form @submit.prevent="login">
-          <div class="content">
-            <label for="username">Username</label><br>
-            <input
-              type="text"
-              id="username"
-              v-model="username"
-              required
-              style="width:100%;margin-bottom:0.5em;"
-            >
-          </div>
-          <div class="content">
-            <label for="password">Password</label><br>
-            <input
-              type="password"
-              id="password"
-              v-model="password"
-              required
-              style="width:100%;margin-bottom:1em;"
-            >
-          </div>
-          <div v-if="error" class="content" style="color:red;">
-            {{ error }}
-          </div>
-          <div class="content" style="text-align:center;">
-            <button type="submit">Log In</button>
-          </div>
-        </form>
+    <div style="text-align:center">
+      <div style="color:  rgb(0, 120, 230);">
+        <h1>Welcome to the Dog</h1>
+        <h1>Walking Service!</h1>
       </div>
-    </main>
+
+
+      <form @submit.prevent="login">
+        <div class="textarea">
+          <div class="content">
+          <label for="username">Username</label> <br>
+          <input
+            type="text"
+            id="username"
+            v-model="username"
+            required
+          >
+          </div>
+        </div>
+
+        <div class="post">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            required
+          >
+        </div>
+
+        <div v-if="error" class="error-message">
+          {{ error }}
+        </div>
+
+        <div class="button-container">
+          <button type="submit" class="login-button">Login</button>
+        </div>
+      </form>
+
+    </div>
   </div>
+
   <script>
     const { createApp } = Vue;
     createApp({
@@ -69,7 +74,9 @@
                 password: this.password
               })
             });
+
             if (response.ok) {
+              // Redirect will be handled by the server
               window.location.href = response.url;
             } else {
               const data = await response.json();
@@ -82,5 +89,7 @@
       }
     }).mount('#app');
   </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
