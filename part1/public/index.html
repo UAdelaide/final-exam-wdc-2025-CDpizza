@@ -10,7 +10,7 @@
     <div id="app">
         <div class="container">
           <h1>Dog of the Day</h1>
-          <img :src="dogPic" style="width: 300px; height: 300px;">
+          <img :src="dogPic" alt="Random dog image" style="width: 300px; height: 300px; object-fit: cover;">
           <div>
             <span>{{ dogName }}</span>
           </div>
@@ -22,6 +22,29 @@
           </div>
         </div>
       </div>
-      
+      <script>
+        const { createApp } = Vue;
+        createApp({
+          data() {
+            return {
+              dogPic: '',
+              dogName: 'Sir Barkalot',
+              dogDesc: 'A very good dog who loves to chase his tail.'
+            }
+          },
+          mounted() {
+            this.getDog();
+          },
+          methods: {
+            getDog() {
+              fetch('https://dog.ceo/api/breeds/image/random')
+                .then(res => res.json())
+                .then(data => {
+                  this.dogPic = data.message;
+                });
+            }
+          }
+        }).mount('#app');
+      </script>
 </body>
 </html>
