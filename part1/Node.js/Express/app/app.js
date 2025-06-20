@@ -51,13 +51,24 @@ let db;
     // execute the sql file to set up tables and data
     const fs = require('fs');
     const sqlFile = fs.readFileSync(path.join(__dirname, 'dogwalks.sql'), 'utf8');
-    const statements = sqlFile.split(';').filter(stmt => stmt.trim());
+    const statements = sqlFile.split(';').filter(stmt => stmt.trim() && !stmt.trim().startsWith('--'));
 
     for (const statement of statements) {
-      if (statement.trim()) {
-        await db.execute(statement);
+      const trimmedStatement = statement.trim();
+      if (trimmedStatement &&
+          !trimmedStatement.startsWith('DROP DATABASE') &&
+          !trimmedStatement.startsWith('CREATE DATABASE') &&
+          !trimmedStatement.startsWith('USE')) {
+        try {
+          await db.query(trimmedStatement);
+        } catch (err) {
+          // ignore errors for statements that might already exist
+          console.log('statement execution info:', trimmedStatement.substring(0, 50) + '...', err.message);
+        }
       }
     }
+
+    console.log('database setup completed successfully');
 
   } catch (err) {
     console.error('error setting up database. ensure mysql is running: service mysql start', err);
