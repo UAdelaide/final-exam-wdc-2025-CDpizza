@@ -7,7 +7,7 @@ var cors = require('cors');
 
 var app = express();
 
-// enable cors for all routes
+// enable all routes
 app.use(cors());
 
 app.use(logger('dev'));
@@ -19,7 +19,7 @@ let db;
 
 (async () => {
   try {
-    // connect to mysql without specifying a database
+    // connect mysql without specifying a database
     const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
