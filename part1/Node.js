@@ -15,7 +15,7 @@ const dbConfig = {
 
 let db;
 
-// Function to insert test data on startup
+
 async function insertTestData(connection) {
   try {
     // Insert users
@@ -28,7 +28,7 @@ async function insertTestData(connection) {
       ('vscodeowner', 'vscode@example.com', 'hasheasd', 'owner')
     `);
 
-    // Insert dogs
+    // dogs
     await connection.query(`
       INSERT IGNORE INTO Dogs (owner_id, name, size) VALUES
       ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Max', 'medium'),
@@ -38,7 +38,7 @@ async function insertTestData(connection) {
       ((SELECT user_id FROM Users WHERE username = 'vscodeowner'), 'Charlie', 'small')
     `);
 
-    // Insert walk requests
+    //  walk requests
     await connection.query(`
       INSERT IGNORE INTO WalkRequests (dog_id, requested_time, duration_minutes, location, status) VALUES
       ((SELECT dog_id FROM Dogs WHERE name = 'Max'), '2025-06-10 08:00:00', 30, 'Parklands', 'open'),
