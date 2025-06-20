@@ -50,34 +50,6 @@
       </form>
 
     </div>
-    <!-- dog table below login form -->
-    <div style="margin-top: 2em;">
-      <!-- all comments in lowercase: table of all dogs -->
-      <table v-if="dogs.length" border="1" cellpadding="8" style="width:100%; background:white;">
-        <thead>
-          <tr>
-            <th>DogID</th>
-            <th>Name</th>
-            <th>Size</th>
-            <th>Owner ID</th>
-            <th>Photo</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="dog in dogs" :key="dog.dog_id">
-            <td>{{ dog.dog_id }}</td>
-            <td>{{ dog.name }}</td>
-            <td>{{ dog.size }}</td>
-            <td>{{ dog.owner_id }}</td>
-            <td>
-              <img v-if="dog.photo" :src="dog.photo" alt="dog photo" style="width:80px;height:80px;object-fit:cover;">
-              <span v-else>loading...</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div v-else style="margin-top:1em;">no dogs found.</div>
-    </div>
   </div>
 
   <script>
@@ -87,8 +59,7 @@
         return {
           username: '',
           password: '',
-          error: '',
-          dogs: [] // all comments in lowercase: array to hold dog data
+          error: ''
         };
       },
       methods: {
@@ -114,32 +85,6 @@
           } catch (err) {
             this.error = 'Login failed';
           }
-        }
-      },
-      async mounted() {
-        // all comments in lowercase: fetch all dogs from /api/dogs (part 1)
-        try {
-          const res = await fetch('/api/dogs');
-          let dogs = await res.json();
-          // all comments in lowercase: add dog_id, name, size, owner_id if not present
-          dogs = dogs.map((dog, idx) => ({
-            dog_id: dog.dog_id || dog.dog_id || idx+1,
-            name: dog.name || dog.dog_name,
-            size: dog.size,
-            owner_id: dog.owner_id || dog.owner_id || dog.ownerId || dog.owner_id || 'unknown',
-            photo: ''
-          }));
-          // all comments in lowercase: fetch a random photo for each dog from dogs.ceo
-          for (const dog of dogs) {
-            try {
-              const resp = await fetch('https://dog.ceo/api/breeds/image/random');
-              const data = await resp.json();
-              dog.photo = data.message;
-            } catch {}
-          }
-          this.dogs = dogs;
-        } catch {
-          this.dogs = [];
         }
       }
     }).mount('#app');
