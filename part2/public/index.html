@@ -139,20 +139,26 @@
             const dogs = await response.json();
 
             // fetch random dog photos for each dog
+            console.log('starting to fetch photos for', dogs.length, 'dogs');
             for (let dog of dogs) {
               try {
+                console.log('fetching photo for dog', dog.dog_id);
                 const photoResponse = await fetch('https://dog.ceo/api/breeds/image/random');
+                console.log('photo response status:', photoResponse.status, photoResponse.ok);
                 const photoData = await photoResponse.json();
                 console.log('photo api response for dog', dog.dog_id, ':', photoData);
                 if (photoData.status === 'success') {
                   dog.photoUrl = photoData.message;
                   console.log('assigned photo url for dog', dog.dog_id, ':', dog.photoUrl);
+                } else {
+                  console.error('photo api returned error status for dog', dog.dog_id);
                 }
               } catch (photoError) {
                 console.error('failed to fetch photo for dog:', dog.dog_id, photoError);
                 // keep dog.photoUrl undefined so placeholder shows
               }
             }
+            console.log('finished fetching photos. final dogs array:', this.dogs);
 
             this.dogs = dogs;
           } catch (error) {
