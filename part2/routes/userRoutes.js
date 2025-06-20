@@ -35,21 +35,32 @@ router.get('/me', (req, res) => {
   res.json(req.session.user);
 });
 
-// POST login (dummy version)
+// POST login (session version)
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
+    // Allow login with either username or email
     const [rows] = await db.query(`
       SELECT user_id, username, role FROM Users
-      WHERE email = ? AND password_hash = ?
-    `, [email, password]);
+      WHERE (email = ? OR username = ?) AND password_hash = ?
+    `, [email || username, username || email, password]);
 
     if (rows.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    res.json({ message: 'Login successful', user: rows[0] });
+    // Store user in session
+    req.session.user = rows[0];
+
+    // Redirect based on role
+    if (rows[0].role === 'owner') {
+      return res.json({ redirect: '/owner-dashboard.html' });
+    } else if (rows[0].role === 'walker') {
+      return res.json({ redirect: '/walker-dashboard.html' });
+    } else {
+      return res.status(403).json({ error: 'Unknown user role' });
+    }
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed' });
