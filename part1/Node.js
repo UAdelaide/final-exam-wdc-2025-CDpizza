@@ -28,7 +28,7 @@ async function insertTestData(connection) {
       ('vscodeowner', 'vscode@example.com', 'hasheasd', 'owner')
     `);
 
-    // dogs
+    // Dogs
     await connection.query(`
       INSERT IGNORE INTO Dogs (owner_id, name, size) VALUES
       ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Max', 'medium'),
@@ -38,7 +38,7 @@ async function insertTestData(connection) {
       ((SELECT user_id FROM Users WHERE username = 'vscodeowner'), 'Charlie', 'small')
     `);
 
-    //  walk requests
+    // Walk requests
     await connection.query(`
       INSERT IGNORE INTO WalkRequests (dog_id, requested_time, duration_minutes, location, status) VALUES
       ((SELECT dog_id FROM Dogs WHERE name = 'Max'), '2025-06-10 08:00:00', 30, 'Parklands', 'open'),
@@ -48,7 +48,7 @@ async function insertTestData(connection) {
       ((SELECT dog_id FROM Dogs WHERE name = 'Charlie'), '2025-06-13 14:00:00', 20, 'Downtown Plaza', 'cancelled')
     `);
 
-    // Insert walk applications for testing
+    // Walk applications for testing
     await connection.query(`
       INSERT IGNORE INTO WalkApplications (request_id, walker_id, status) VALUES
       (1, (SELECT user_id FROM Users WHERE username = 'bobwalker'), 'accepted'),
@@ -56,7 +56,7 @@ async function insertTestData(connection) {
       (4, (SELECT user_id FROM Users WHERE username = 'pizzawalker'), 'accepted')
     `);
 
-    // Insert walk ratings for testing
+    // Walk ratings for testing
     await connection.query(`
       INSERT IGNORE INTO WalkRatings (request_id, walker_id, owner_id, rating, comments) VALUES
       (1, (SELECT user_id FROM Users WHERE username = 'bobwalker'), (SELECT user_id FROM Users WHERE username = 'alice123'), 5, 'Great walk!'),
