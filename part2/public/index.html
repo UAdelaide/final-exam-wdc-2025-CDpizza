@@ -7,17 +7,16 @@
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
-<body >
+<body>
   <div id="app" style="max-width: 1200px; margin:8% auto 0 auto; padding: 0 20px;">
+    <!-- login section -->
     <div style="text-align:left; max-width: 500px; margin: 0 auto;">
-      <div style="color:  rgb(0, 120, 230);">
+      <div style="color: rgb(0, 120, 230);">
         <h1>Welcome to the Dog</h1>
         <h1>Walking Service!</h1>
       </div>
 
-
       <form @submit.prevent="login">
-
         <div class="login-text">
           <label for="username">Username or Email</label> <br>
           <input
@@ -30,7 +29,7 @@
         </div>
 
         <div class="login-text">
-          <label for="password" >Password</label> <br>
+          <label for="password">Password</label> <br>
           <input
             type="password"
             id="password"
@@ -48,9 +47,6 @@
           <button type="submit" class="login-button">Login</button>
         </div>
       </form>
-
-    </div>
-
     </div>
 
     <!-- dogs table section -->
@@ -76,29 +72,29 @@
               <td style="border: 1px solid #ddd; padding: 12px;">{{ dog.size }}</td>
               <td style="border: 1px solid #ddd; padding: 12px; text-align: center;">{{ dog.owner_id }}</td>
               <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
-                <div style="width: 120px; height: 120px; margin: 0 auto; border-radius: 8px; overflow: hidden; background-color: #f8f9fa;">
+                <div style="width: 120px; height: 120px; margin: 0 auto; border-radius: 8px; overflow: hidden; background-color: #f8f9fa; border: 2px solid #e9ecef;">
                   <img
-                    v-if="dog.photoUrl"
+                    v-if="dog.photoUrl && !dog.photoError"
                     :src="dog.photoUrl"
                     :alt="'Photo of ' + dog.dog_name"
                     style="width: 100%; height: 100%; object-fit: cover;"
                     @error="handleImageError(dog)"
                     @load="handleImageLoad(dog)"
                   >
-                  <div v-else-if="dog.photoLoading" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #6c757d;">
+                  <div v-else-if="dog.photoLoading" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #6c757d;">
                     loading...
                   </div>
-                  <div v-else style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #6c757d; text-align: center;">
-                    no photo<br>available
+                  <div v-else style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #6c757d; text-align: center; padding: 10px;">
+                    🐕<br>photo<br>unavailable
                   </div>
                 </div>
               </td>
             </tr>
           </tbody>
-          </table>
-        </div>
+        </table>
       </div>
     </div>
+  </div>
 
   <script>
     const { createApp } = Vue;
@@ -141,7 +137,7 @@
             this.error = 'Login failed';
           }
         },
-                async fetchDogs() {
+        async fetchDogs() {
           try {
             this.dogsLoading = true;
             this.dogsError = '';
@@ -154,27 +150,53 @@
 
             const dogs = await response.json();
 
-            // fetch random dog photos for each dog
-            for (let dog of dogs) {
+            // initialize photo loading state for each dog
+            dogs.forEach(dog => {
+              dog.photoLoading = true;
+              dog.photoError = false;
+              dog.photoUrl = null;
+            });
+
+            this.dogs = dogs;
+
+            // fetch random dog photos for each dog in parallel
+            const photoPromises = dogs.map(async (dog) => {
               try {
                 const photoResponse = await fetch('https://dog.ceo/api/breeds/image/random');
                 const photoData = await photoResponse.json();
                 if (photoData.status === 'success') {
                   dog.photoUrl = photoData.message;
+                  dog.photoLoading = false;
+                } else {
+                  throw new Error('dog.ceo api returned error status');
                 }
               } catch (photoError) {
                 console.error('failed to fetch photo for dog:', dog.dog_id, photoError);
-                // keep dog.photoUrl undefined so placeholder shows
+                dog.photoError = true;
+                dog.photoLoading = false;
               }
-            }
+            });
 
-            this.dogs = dogs;
+            // wait for all photos to load (or fail)
+            await Promise.allSettled(photoPromises);
+
           } catch (error) {
             console.error('error fetching dogs:', error);
             this.dogsError = 'failed to load dogs data. ensure part1 server is running on port 3000';
           } finally {
             this.dogsLoading = false;
           }
+        },
+        handleImageError(dog) {
+          // handle image load errors
+          console.log('image failed to load for dog:', dog.dog_id);
+          dog.photoError = true;
+          dog.photoLoading = false;
+        },
+        handleImageLoad(dog) {
+          // handle successful image loads
+          console.log('image loaded successfully for dog:', dog.dog_id);
+          dog.photoLoading = false;
         }
       }
     }).mount('#app');
