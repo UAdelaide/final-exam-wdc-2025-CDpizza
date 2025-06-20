@@ -193,10 +193,6 @@ section {
     font-size: 1em;
   }
 
-  .login-button {
-    width: 100%;
-    margin-top: 1em;
-  }
 
   .error-message {
     background-color: #ffebee;
