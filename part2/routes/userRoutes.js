@@ -40,7 +40,7 @@ router.post('/login', async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // Allow login with either username or email
+    // allow login with either username or email
     const [rows] = await db.query(`
       SELECT user_id, username, role FROM Users
       WHERE (email = ? OR username = ?) AND password_hash = ?
@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    // Store user in session
+    // store user in session
     req.session.user = rows[0];
 
     // Redirect based on role
