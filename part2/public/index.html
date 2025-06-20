@@ -143,8 +143,10 @@
               try {
                 const photoResponse = await fetch('https://dog.ceo/api/breeds/image/random');
                 const photoData = await photoResponse.json();
+                console.log('photo api response for dog', dog.dog_id, ':', photoData);
                 if (photoData.status === 'success') {
                   dog.photoUrl = photoData.message;
+                  console.log('assigned photo url for dog', dog.dog_id, ':', dog.photoUrl);
                 }
               } catch (photoError) {
                 console.error('failed to fetch photo for dog:', dog.dog_id, photoError);
