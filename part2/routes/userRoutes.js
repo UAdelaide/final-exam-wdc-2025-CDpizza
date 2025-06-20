@@ -40,7 +40,7 @@ router.post('/login', async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // allow login with either username or email
+    // allow login with username or email
     const [rows] = await db.query(`
       SELECT user_id, username, role FROM Users
       WHERE (email = ? OR username = ?) AND password_hash = ?
@@ -67,7 +67,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// logout 
+// logout
 router.post('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
