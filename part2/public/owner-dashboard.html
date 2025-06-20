@@ -134,7 +134,7 @@
         }
 
         onMounted(async () => {
-          // Fetch only the logged-in owner's dogs
+          // get only the logoin owner's dogs
           try {
             const res = await fetch('/api/users/mydogs');
             if (res.ok) {
