@@ -137,26 +137,43 @@
             }
 
             const dogs = await response.json();
+            console.log('fetched dogs:', dogs);
 
-            // fetch random dog photos for each dog
-            for (let dog of dogs) {
+            // initialize dogs with loading state for photos
+            dogs.forEach(dog => {
+              dog.photoUrl = null;
+              dog.photoLoading = true;
+            });
+
+            // set dogs first so they appear in the table
+            this.dogs = dogs;
+            this.dogsLoading = false;
+
+            // fetch random dog photos for each dog asynchronously
+            this.dogs.forEach(async (dog, index) => {
               try {
+                console.log(`fetching photo for dog ${dog.dog_id}:`, dog.dog_name);
                 const photoResponse = await fetch('https://dog.ceo/api/breeds/image/random');
                 const photoData = await photoResponse.json();
+                console.log('photo response for', dog.dog_name, ':', photoData);
+
                 if (photoData.status === 'success') {
-                  dog.photoUrl = photoData.message;
+                  // use vue's reactivity to update the photo
+                  this.$set ? this.$set(this.dogs[index], 'photoUrl', photoData.message) :
+                    (this.dogs[index].photoUrl = photoData.message);
+                  this.dogs[index].photoLoading = false;
+                  console.log('set photo for', dog.dog_name, ':', photoData.message);
                 }
               } catch (photoError) {
                 console.error('failed to fetch photo for dog:', dog.dog_id, photoError);
-                // keep dog.photoUrl undefined so placeholder shows
+                this.dogs[index].photoLoading = false;
+                this.dogs[index].photoUrl = 'https://via.placeholder.com/100x100/f0f0f0/666?text=No+Photo';
               }
-            }
+            });
 
-            this.dogs = dogs;
           } catch (error) {
             console.error('error fetching dogs:', error);
             this.dogsError = 'failed to load dogs data. ensure part1 server is running on port 3000';
-          } finally {
             this.dogsLoading = false;
           }
         }
