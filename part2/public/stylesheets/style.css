@@ -155,4 +155,6 @@ section {
     display: none;
 }
 
-.log
+.login-text{
+    margin-bottom: 1em;
+}
