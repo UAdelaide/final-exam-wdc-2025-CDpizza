@@ -6,6 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/stylesheets/style.css">
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    .dog-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2em;
+    }
+    .dog-table th, .dog-table td {
+      border: 1px solid #ccc;
+      padding: 0.5em;
+      text-align: left;
+    }
+    .loading {
+      font-size: 1.5em;
+      color: #0078e6;
+      margin-top: 2em;
+    }
+  </style>
 </head>
 <body >
   <div id="app" style="width:40%; margin:8% auto 0 auto;">
@@ -15,6 +32,28 @@
         <h1>Walking Service!</h1>
       </div>
 
+      <div v-if="loading" class="loading">Loading dogs...</div>
+      <table v-else class="dog-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Owner</th>
+            <th>Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="dog in dogs" :key="dog.dog_id">
+            <td>{{ dog.name }}</td>
+            <td>{{ dog.size }}</td>
+            <td>{{ dog.owner || 'Unknown' }}</td>
+            <td>
+              <img v-if="dog.image" :src="dog.image" alt="Dog image" style="max-width:100px;max-height:100px;">
+              <span v-else>Loading image...</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <form @submit.prevent="login">
 
@@ -59,7 +98,9 @@
         return {
           username: '',
           password: '',
-          error: ''
+          error: '',
+          dogs: [],
+          loading: true
         };
       },
       methods: {
@@ -85,6 +126,25 @@
           } catch (err) {
             this.error = 'Login failed';
           }
+        },
+        async mounted() {
+          // Fetch all dogs from your backend
+          const res = await fetch('/api/dogs');
+          let dogs = await res.json();
+
+          // For each dog, fetch a random image from Dog CEO API
+          await Promise.all(dogs.map(async (dog) => {
+            try {
+              const imgRes = await fetch('https://dog.ceo/api/breeds/image/random');
+              const imgData = await imgRes.json();
+              dog.image = imgData.message;
+            } catch {
+              dog.image = null;
+            }
+          }));
+
+          this.dogs = dogs;
+          this.loading = false;
         }
       }
     }).mount('#app');
