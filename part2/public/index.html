@@ -136,32 +136,34 @@
               throw new Error('failed to fetch dogs data. make sure part1 server is running on port 3000');
             }
 
-            const dogs = await response.json();
+                        const dogs = await response.json();
 
-            // fetch random dog photos for each dog
+            // first assign dogs without photos to show the table quickly
+            this.dogs = dogs.map(dog => ({ ...dog, photoUrl: null }));
+
+            // then fetch random dog photos for each dog
             console.log('starting to fetch photos for', dogs.length, 'dogs');
-            for (let dog of dogs) {
+            for (let i = 0; i < dogs.length; i++) {
               try {
-                console.log('fetching photo for dog', dog.dog_id);
+                console.log('fetching photo for dog', dogs[i].dog_id);
                 const photoResponse = await fetch('https://dog.ceo/api/breeds/image/random');
                 console.log('photo response status:', photoResponse.status, photoResponse.ok);
                 const photoData = await photoResponse.json();
-                console.log('photo api response for dog', dog.dog_id, ':', photoData);
+                console.log('photo api response for dog', dogs[i].dog_id, ':', photoData);
                 if (photoData.status === 'success') {
-                  dog.photoUrl = photoData.message;
-                  console.log('assigned photo url for dog', dog.dog_id, ':', dog.photoUrl);
+                  // use vue reactive assignment
+                  this.$set ? this.$set(this.dogs[i], 'photoUrl', photoData.message) :
+                    (this.dogs[i].photoUrl = photoData.message);
+                  console.log('assigned photo url for dog', dogs[i].dog_id, ':', photoData.message);
                 } else {
-                  console.error('photo api returned error status for dog', dog.dog_id);
+                  console.error('photo api returned error status for dog', dogs[i].dog_id);
                 }
               } catch (photoError) {
-                console.error('failed to fetch photo for dog:', dog.dog_id, photoError);
-                // keep dog.photoUrl undefined so placeholder shows
+                console.error('failed to fetch photo for dog:', dogs[i].dog_id, photoError);
+                // keep photoUrl as null so placeholder shows
               }
-                        }
-            console.log('finished fetching photos. final dogs array:', dogs);
-
-            // assign dogs to reactive data to trigger vue update
-            this.dogs = [...dogs]; // create a new array to ensure vue reactivity
+            }
+            console.log('finished fetching photos. final dogs array:', this.dogs);
           } catch (error) {
             console.error('error fetching dogs:', error);
             this.dogsError = 'failed to load dogs data. ensure part1 server is running on port 3000';
