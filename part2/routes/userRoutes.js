@@ -67,13 +67,13 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Logout route
+// logout 
 router.post('/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) {
       return res.status(500).json({ error: 'Logout failed' });
     }
-    res.clearCookie('connect.sid'); // Default cookie name for express-session
+    res.clearCookie('connect.sid'); // default cookie name for express-session
     res.json({ message: 'Logged out' });
   });
 });
