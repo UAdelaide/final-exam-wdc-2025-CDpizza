@@ -9,7 +9,10 @@
 </head>
 <body class="bg-light">
   <div id="app" class="container py-4">
-    <h1 class="mb-4 text-primary">Owner Dashboard</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="text-primary">Owner Dashboard</h1>
+      <button class="btn btn-danger" @click="logout">Logout</button>
+    </div>
 
     <!-- Walk request form -->
     <div class="card mb-4">
@@ -115,6 +118,16 @@
           }
         }
 
+        async function logout() {
+          try {
+            await fetch('/api/users/logout', { method: 'POST', credentials: 'same-origin' });
+            // Redirect to login page
+            window.location.href = '/index.html';
+          } catch (err) {
+            alert('Logout failed');
+          }
+        }
+
         onMounted(() => {
           loadWalks();
         });
@@ -124,7 +137,8 @@
           walks,
           message,
           error,
-          submitWalkRequest
+          submitWalkRequest,
+          logout
         };
       }
     }).mount('#app');
