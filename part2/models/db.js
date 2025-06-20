@@ -20,4 +20,5 @@ app.use(cors({
   origin: 'http://localhost:8080', // or '*'
   credentials: true
 }));
+
 module.exports = pool;
