@@ -125,7 +125,7 @@
             this.error = 'Login failed';
           }
         },
-        async fetchDogs() {
+                async fetchDogs() {
           try {
             this.dogsLoading = true;
             this.dogsError = '';
@@ -133,7 +133,7 @@
             // fetch dogs from part1 api endpoint
             const response = await fetch('http://localhost:3000/api/dogs');
             if (!response.ok) {
-              throw new Error('failed to fetch dogs');
+              throw new Error('failed to fetch dogs data. make sure part1 server is running on port 3000');
             }
 
             const dogs = await response.json();
@@ -155,7 +155,7 @@
             this.dogs = dogs;
           } catch (error) {
             console.error('error fetching dogs:', error);
-            this.dogsError = 'failed to load dogs data';
+            this.dogsError = 'failed to load dogs data. ensure part1 server is running on port 3000';
           } finally {
             this.dogsLoading = false;
           }
