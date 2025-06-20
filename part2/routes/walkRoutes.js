@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
+const fetch = require('node-fetch');
 
 // GET all walk requests (for walkers to view)
 router.get('/', async (req, res) => {
@@ -56,6 +57,36 @@ router.post('/:id/apply', async (req, res) => {
   } catch (error) {
     console.error('SQL Error:', error);
     res.status(500).json({ error: 'Failed to apply for walk' });
+  }
+});
+
+// get all dogs with a random photo from dogs.ceo
+router.get('/api/dogs', async (req, res) => {
+  try {
+    // get all dogs from the database
+    const [dogs] = await db.query('SELECT dog_id, name, size, owner_id FROM Dogs');
+
+    // fetch a random photo for each dog from dogs.ceo
+    const dogsWithPhotos = await Promise.all(dogs.map(async (dog) => {
+      // fetch a random dog photo
+      let photoUrl = '';
+      try {
+        const response = await fetch('https://dog.ceo/api/breeds/image/random');
+        const data = await response.json();
+        photoUrl = data.message;
+      } catch (err) {
+        // fallback to empty string if fetch fails
+        photoUrl = '';
+      }
+      // return dog info with photo
+      return { ...dog, photo: photoUrl };
+    }));
+
+    // return the dogs with photos
+    res.json(dogsWithPhotos);
+  } catch (error) {
+    // handle errors
+    res.status(500).json({ error: 'failed to fetch dogs' });
   }
 });
 
