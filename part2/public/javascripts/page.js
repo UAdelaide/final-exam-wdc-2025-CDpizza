@@ -211,38 +211,3 @@ function logout(){
     xmlhttp.send();
 
 }
-
-// fetch and display all registered dogs in a table
-async function loadDogsTable() {
-  // get the container for the table
-  const container = document.getElementById('dogs-table-container');
-  // fetch the dogs data from the api
-  let dogs = [];
-  try {
-    const response = await fetch('/api/dogs');
-    dogs = await response.json();
-  } catch (err) {
-    // show error if fetch fails
-    container.innerHTML = '<p>failed to load dogs</p>';
-    return;
-  }
-  // build the table html
-  let html = '<h2>All Registered Dogs</h2>';
-  html += '<table style="width:100%; border-collapse:collapse;">';
-  html += '<tr><th>Dog ID</th><th>Name</th><th>Size</th><th>Owner ID</th><th>Photo</th></tr>';
-  for (const dog of dogs) {
-    html += `<tr>
-      <td>${dog.dog_id}</td>
-      <td>${dog.name}</td>
-      <td>${dog.size}</td>
-      <td>${dog.owner_id}</td>
-      <td><img src="${dog.photo}" alt="dog photo" style="width:60px;height:60px;object-fit:cover;"></td>
-    </tr>`;
-  }
-  html += '</table>';
-  // set the table html in the container
-  container.innerHTML = html;
-}
-
-// load the dogs table when the page loads
-window.addEventListener('DOMContentLoaded', loadDogsTable);
