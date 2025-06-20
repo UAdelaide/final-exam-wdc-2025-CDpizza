@@ -3,10 +3,12 @@ const router = express.Router();
 
 router.get('/api/dogs', async (req, res) => {
     try {
-      const [rows] = await db.query(`
+      const [rows] = await req.db.query(`
         SELECT
+          Dogs.dog_id,
           Dogs.name AS dog_name,
           Dogs.size,
+          Dogs.owner_id,
           Users.username AS owner_username
         FROM Dogs
         JOIN Users ON Dogs.owner_id = Users.user_id
@@ -16,3 +18,5 @@ router.get('/api/dogs', async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   });
+
+module.exports = router;
