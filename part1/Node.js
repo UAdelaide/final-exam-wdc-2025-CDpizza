@@ -48,21 +48,6 @@ async function insertTestData(connection) {
       ((SELECT dog_id FROM Dogs WHERE name = 'Charlie'), '2025-06-13 14:00:00', 20, 'Downtown Plaza', 'cancelled')
     `);
 
-    // Walk applications for testing
-    await connection.query(`
-      INSERT IGNORE INTO WalkApplications (request_id, walker_id, status) VALUES
-      (1, (SELECT user_id FROM Users WHERE username = 'bobwalker'), 'accepted'),
-      (2, (SELECT user_id FROM Users WHERE username = 'bobwalker'), 'accepted'),
-      (4, (SELECT user_id FROM Users WHERE username = 'pizzawalker'), 'accepted')
-    `);
-
-    // Walk ratings for testing
-    await connection.query(`
-      INSERT IGNORE INTO WalkRatings (request_id, walker_id, owner_id, rating, comments) VALUES
-      (1, (SELECT user_id FROM Users WHERE username = 'bobwalker'), (SELECT user_id FROM Users WHERE username = 'alice123'), 5, 'Great walk!'),
-      (2, (SELECT user_id FROM Users WHERE username = 'bobwalker'), (SELECT user_id FROM Users WHERE username = 'carol123'), 4, 'Good job!'),
-      (4, (SELECT user_id FROM Users WHERE username = 'pizzawalker'), (SELECT user_id FROM Users WHERE username = 'vscodeowner'), 5, 'Excellent!')
-    `);
 
     console.log('Test data inserted successfully');
   } catch (error) {
