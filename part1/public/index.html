@@ -1,90 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dog of the Day - Bad UX Example</title>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <style>
-    body {
-      background: linear-gradient(45deg, #ff0, #0ff, #f0f, #fff, #000);
-      color: #ff00ff;
-      font-size: 1.5em;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-    }
-    .dog-container {
-      margin: 50px;
-      border: 10px dashed #00f;
-      padding: 40px;
-      background: #fff8;
-      text-align: center;
-      animation: spin 5s linear infinite;
-    }
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
-    }
-    .hidden-label {
-      display: none;
-    }
-    .button {
-      background: none;
-      border: none;
-      color: #0f0;
-      font-size: 2em;
-      cursor: pointer;
-      margin: 20px;
-    }
-    .button:focus {
-      outline: none;
-    }
-  </style>
+    <title>Express</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
+
 <body>
-  <div id="app">
-    <div class="dog-container">
-      <h1>Dog of the Day</h1>
-      <img :src="dogPic" style="width: 400px; height: 400px; border-radius: 50%; border: 5px solid #f00;">
-      <div>
-        <input class="hidden-label" id="dogName" v-model="dogName">
-        <span style="font-size: 2em;">{{ dogName }}</span>
-      </div>
-      <div>
-        <button class="button" @click="getDog">🔄</button>
-      </div>
-      <div>
-        <span style="background: #ff0; color: #00f; font-size: 1.2em;">
-          {{ dogDesc }}
-        </span>
-      </div>
-      <div>
-        <marquee behavior="scroll" direction="left" style="color: #f00; font-size: 2em;">
-          Click the green button to see another dog! Or don't! Or maybe do! Who knows!
-        </marquee>
-      </div>
-    </div>
-  </div>
-  <script>
-    const { createApp } = Vue;
-    createApp({
-      data() {
-        return {
-          dogPic: '',
-          dogName: 'Sir Barkalot the Third',
-          dogDesc: 'A very good dog who loves to chase his tail and bark at the moon. He is the bestest boy ever, according to a survey of one (himself).'
-        }
-      },
-      mounted() {
-        this.getDog();
-      },
-      methods: {
-        getDog() {
-          fetch('https://dog.ceo/api/breeds/image/random')
-            .then(res => res.json())
-            .then(data => {
-              this.dogPic = data.message;
-            });
-        }
-      }
-    }).mount('#app');
-  </script>
+    <h1>Express</h1>
+    <p>Welcome to Express</p>
 </body>
 </html>
