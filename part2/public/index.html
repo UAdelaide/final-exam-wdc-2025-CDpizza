@@ -123,8 +123,8 @@
     // function to load and display dogs from part 1 api
     async function loadDogs() {
       try {
-        // fetch dogs from part 1 api (assuming it runs on port 3000)
-        const response = await fetch('http://localhost:3000/api/dogs');
+        // fetch dogs from part 1 api (running on port 3001)
+        const response = await fetch('http://localhost:3001/api/dogs');
         const dogs = await response.json();
 
         const tableBody = document.getElementById('dogs-table-body');
