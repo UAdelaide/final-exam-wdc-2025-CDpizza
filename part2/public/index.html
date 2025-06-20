@@ -74,12 +74,8 @@
             <td style="border: 1px solid #ddd; padding: 12px;">{{ dog.owner_id }}</td>
             <td style="border: 1px solid #ddd; padding: 12px;">
               <div style="width: 100px; height: 100px; border-radius: 8px; overflow: hidden;">
-                <template v-if="dog.photoUrl && dog.photoUrl !== null">
-                  <img src="#" :src="dog.photoUrl" alt="Dog photo" style="width: 100%; height: 100%; object-fit: cover;" @error="onImageError">
-                </template>
-                <template v-else>
-                  <div style="width: 100%; height: 100%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 12px;">loading...</div>
-                </template>
+                <div v-if="dog.photoUrl && dog.photoUrl !== null" :style="{ width: '100%', height: '100%', backgroundImage: 'url(' + dog.photoUrl + ')', backgroundSize: 'cover', backgroundPosition: 'center' }"></div>
+                <div v-else style="width: 100%; height: 100%; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 12px;">loading...</div>
               </div>
             </td>
           </tr>
