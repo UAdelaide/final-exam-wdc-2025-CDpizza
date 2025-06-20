@@ -19,14 +19,14 @@ let db;
 
 (async () => {
   try {
-    // connect mysql without specifying a database
+    // connect mysql without database
     const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
       password: '' // set your mysql root password
     });
 
-    // create the dogwalkservice database if it doesn't exist
+    // create  database if it doesn't exist
     await connection.query('CREATE DATABASE IF NOT EXISTS DogWalkService');
     await connection.end();
 
