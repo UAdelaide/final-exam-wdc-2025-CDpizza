@@ -9,5 +9,5 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-console.log('DB password:', user.password_hash, 'Entered password:', password);
+
 module.exports = pool;
