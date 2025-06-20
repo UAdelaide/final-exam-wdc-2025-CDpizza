@@ -103,6 +103,8 @@
             }
           } catch (err) {
             this.error = 'Login failed';
+          } finally {
+            // always runs
           }
         },
         async fetchDogs() {
@@ -121,6 +123,10 @@
               }
               this.dogs = dogList;
             }
+          } catch (err) {
+            console.error('Error fetching dogs:', err);
+          } finally {
+            // always runs
           }
         }
       },
