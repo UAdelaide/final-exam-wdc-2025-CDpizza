@@ -157,10 +157,11 @@
                 console.error('failed to fetch photo for dog:', dog.dog_id, photoError);
                 // keep dog.photoUrl undefined so placeholder shows
               }
-            }
-            console.log('finished fetching photos. final dogs array:', this.dogs);
+                        }
+            console.log('finished fetching photos. final dogs array:', dogs);
 
-            this.dogs = dogs;
+            // assign dogs to reactive data to trigger vue update
+            this.dogs = [...dogs]; // create a new array to ensure vue reactivity
           } catch (error) {
             console.error('error fetching dogs:', error);
             this.dogsError = 'failed to load dogs data. ensure part1 server is running on port 3000';
