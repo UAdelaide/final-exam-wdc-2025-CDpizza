@@ -15,7 +15,7 @@ const dbConfig = {
 
 let db;
 
-
+// Function to insert test data on startup
 async function insertTestData(connection) {
   try {
     // Insert users
@@ -24,18 +24,18 @@ async function insertTestData(connection) {
       ('alice123', 'alice@example.com', 'hashed123', 'owner'),
       ('bobwalker', 'bob@example.com', 'hashed456', 'walker'),
       ('carol123', 'carol@example.com', 'hashed789', 'owner'),
-      ('davewalker', 'dave@example.com', 'hashedabc', 'walker'),
-      ('eveowner', 'eve@example.com', 'hashedxyz', 'owner')
+      ('pizzawalker', 'pizza@example.com', 'hashedzxc', 'walker'),
+      ('vscodeowner', 'vscode@example.com', 'hasheasd', 'owner')
     `);
 
-    
+    // Insert dogs
     await connection.query(`
       INSERT IGNORE INTO Dogs (owner_id, name, size) VALUES
       ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Max', 'medium'),
       ((SELECT user_id FROM Users WHERE username = 'carol123'), 'Bella', 'small'),
       ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Rocky', 'large'),
-      ((SELECT user_id FROM Users WHERE username = 'eveowner'), 'Luna', 'medium'),
-      ((SELECT user_id FROM Users WHERE username = 'eveowner'), 'Charlie', 'small')
+      ((SELECT user_id FROM Users WHERE username = 'vscodeowner'), 'Luna', 'medium'),
+      ((SELECT user_id FROM Users WHERE username = 'vscodeowner'), 'Charlie', 'small')
     `);
 
     // Insert walk requests
@@ -53,7 +53,7 @@ async function insertTestData(connection) {
       INSERT IGNORE INTO WalkApplications (request_id, walker_id, status) VALUES
       (1, (SELECT user_id FROM Users WHERE username = 'bobwalker'), 'accepted'),
       (2, (SELECT user_id FROM Users WHERE username = 'bobwalker'), 'accepted'),
-      (4, (SELECT user_id FROM Users WHERE username = 'davewalker'), 'accepted')
+      (4, (SELECT user_id FROM Users WHERE username = 'pizzawalker'), 'accepted')
     `);
 
     // Insert walk ratings for testing
