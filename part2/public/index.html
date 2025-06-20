@@ -9,47 +9,41 @@
 </head>
 <body class="bg-light">
 
-  <div id="app" class="container py-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h1 class="tag mb-4 text-primary">Welcome to the Dog </h1>
-            <h1 class="tag mb-4 text-primary">Walking Service</h1>
+  <div id="app">
+    <div class="login-container">
+      <h1>Dog Walking Service</h1>
+      <h3>Login</h3>
 
-            <form @submit.prevent="login">
-              <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="username"
-                  v-model="username"
-                  required
-                >
-              </div>
-
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  v-model="password"
-                  required
-                >
-              </div>
-
-              <div v-if="error" class="alert alert-danger">
-                {{ error }}
-              </div>
-
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Login</button>
-              </div>
-            </form>
-          </div>
+      <form @submit.prevent="login">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            v-model="username"
+            required
+          >
         </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            required
+          >
+        </div>
+
+        <div v-if="error" class="error-message">
+          {{ error }}
+        </div>
+
+        <button type="submit" class="login-button">Login</button>
+      </form>
+
+      <div class="test-users">
+        Test users: alice123 (owner), bobwalker (walker), carol123 (owner)
       </div>
     </div>
   </div>
