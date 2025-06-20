@@ -83,7 +83,7 @@ async function insertTestData(connection) {
   }
 })();
 
-// Route 1: /api/dogs - Return all dogs with size and owner's username
+// Return all dogs with size and owner's username
 app.get('/api/dogs', async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -100,7 +100,7 @@ app.get('/api/dogs', async (req, res) => {
   }
 });
 
-// Route 2: /api/walkrequests/open - Return all open walk requests
+// Return all open walk requests
 app.get('/api/walkrequests/open', async (req, res) => {
   try {
     const [rows] = await db.query(`
