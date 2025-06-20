@@ -61,7 +61,7 @@ async function insertTestData(connection) {
       INSERT IGNORE INTO WalkRatings (request_id, walker_id, owner_id, rating, comments) VALUES
       (1, (SELECT user_id FROM Users WHERE username = 'bobwalker'), (SELECT user_id FROM Users WHERE username = 'alice123'), 5, 'Great walk!'),
       (2, (SELECT user_id FROM Users WHERE username = 'bobwalker'), (SELECT user_id FROM Users WHERE username = 'carol123'), 4, 'Good job!'),
-      (4, (SELECT user_id FROM Users WHERE username = 'davewalker'), (SELECT user_id FROM Users WHERE username = 'eveowner'), 5, 'Excellent!')
+      (4, (SELECT user_id FROM Users WHERE username = 'pizzawalker'), (SELECT user_id FROM Users WHERE username = 'vscodeowner'), 5, 'Excellent!')
     `);
 
     console.log('Test data inserted successfully');
@@ -139,7 +139,7 @@ app.get('/api/walkers/summary', async (req, res) => {
       FROM Users u
       LEFT JOIN WalkRatings r ON u.user_id = r.walker_id
       WHERE u.role = 'walker'
-      GROUP BY u.user_id
+      GROUP BY u.user_id, u.username
     `);
     res.json(rows);
   } catch (error) {
