@@ -15,6 +15,24 @@
         <h1>Walking Service!</h1>
       </div>
 
+      <table v-if="dogs.length" class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Photo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="dog in dogs" :key="dog.dog_id">
+            <td>{{ dog.name }}</td>
+            <td>{{ dog.size }}</td>
+            <td>
+              <img :src="dog.photo" alt="Dog photo" style="max-width:100px;max-height:100px;">
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <form @submit.prevent="login">
 
@@ -59,7 +77,8 @@
         return {
           username: '',
           password: '',
-          error: ''
+          error: '',
+          dogs: []
         };
       },
       methods: {
@@ -85,7 +104,28 @@
           } catch (err) {
             this.error = 'Login failed';
           }
+        },
+        async fetchDogs() {
+          try {
+            const res = await fetch('/api/dogs');
+            if (res.ok) {
+              const dogList = await res.json();
+              for (const dog of dogList) {
+                try {
+                  const photoRes = await fetch('https://dog.ceo/api/breeds/image/random');
+                  const photoData = await photoRes.json();
+                  dog.photo = photoData.message;
+                } catch {
+                  dog.photo = ''; // fallback if API fails
+                }
+              }
+              this.dogs = dogList;
+            }
+          }
         }
+      },
+      mounted() {
+        this.fetchDogs();
       }
     }).mount('#app');
   </script>
