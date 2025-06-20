@@ -4,6 +4,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var mysql = require('mysql2/promise');
 
+// import the dog api route
+var dogRouter = require('./routes/api/dog');
+
 var app = express();
 
 app.use(logger('dev'));
@@ -11,60 +14,55 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// use the dog api route
+app.use('/', dogRouter);
+
 let db;
 
 (async () => {
   try {
-    // Connect to MySQL without specifying a database
+    // connect to mysql without specifying a database
     const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      password: '' // Set your MySQL root password
+      password: '' // set your mysql root password
     });
 
-    // Create the database if it doesn't exist
-    await connection.query('CREATE DATABASE IF NOT EXISTS testdb');
+    // create the dogwalkservice database if it doesn't exist
+    await connection.query('CREATE DATABASE IF NOT EXISTS DogWalkService');
     await connection.end();
 
-    // Now connect to the created database
+    // now connect to the dogwalkservice database
     db = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'testdb'
+      database: 'DogWalkService'
     });
 
-    // Create a table if it doesn't exist
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS books (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        title VARCHAR(255),
-        author VARCHAR(255)
-      )
-    `);
+    // execute the sql file to set up tables and data
+    const fs = require('fs');
+    const sqlFile = fs.readFileSync(path.join(__dirname, 'dogwalks.sql'), 'utf8');
+    const statements = sqlFile.split(';').filter(stmt => stmt.trim());
 
-    // Insert data if table is empty
-    const [rows] = await db.execute('SELECT COUNT(*) AS count FROM books');
-    if (rows[0].count === 0) {
-      await db.execute(`
-        INSERT INTO books (title, author) VALUES
-        ('1984', 'George Orwell'),
-        ('To Kill a Mockingbird', 'Harper Lee'),
-        ('Brave New World', 'Aldous Huxley')
-      `);
+    for (const statement of statements) {
+      if (statement.trim()) {
+        await db.execute(statement);
+      }
     }
+
   } catch (err) {
-    console.error('Error setting up database. Ensure Mysql is running: service mysql start', err);
+    console.error('error setting up database. ensure mysql is running: service mysql start', err);
   }
 })();
 
-// Route to return books as JSON
-app.get('/', async (req, res) => {
+// route to return books as json (legacy route)
+app.get('/books', async (req, res) => {
   try {
     const [books] = await db.execute('SELECT * FROM books');
     res.json(books);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch books' });
+    res.status(500).json({ error: 'failed to fetch books' });
   }
 });
 
