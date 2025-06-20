@@ -61,7 +61,7 @@ async function insertTestData(connection) {
       INSERT IGNORE INTO WalkRatings (request_id, walker_id, owner_id, rating, comments) VALUES
       (1, (SELECT user_id FROM Users WHERE username = 'bobwalker'), (SELECT user_id FROM Users WHERE username = 'alice123'), 5, 'Great walk!'),
       (2, (SELECT user_id FROM Users WHERE username = 'bobwalker'), (SELECT user_id FROM Users WHERE username = 'carol123'), 4, 'Good job!'),
-      (4, (SELECT user_id FROM Users WHERE username = 'davewalker'), (SELECT user_id FROM Users WHERE username = 'eveowner'), 5, 'Excellent!')
+      (4, (SELECT user_id FROM Users WHERE username = 'pizzawalker'), (SELECT user_id FROM Users WHERE username = 'vscodeowner'), 5, 'Excellent!')
     `);
 
     console.log('Test data inserted successfully');
