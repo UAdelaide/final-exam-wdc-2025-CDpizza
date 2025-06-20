@@ -1,4 +1,7 @@
-app.get('/api/walkers/summary', async (req, res) => {
+const express = require('express');
+const router = express.Router();
+
+router.get('/api/walkers/summary', async (req, res) => {
     try {
       const [rows] = await db.query(`
         SELECT
