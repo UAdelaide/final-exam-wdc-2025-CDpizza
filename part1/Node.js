@@ -122,7 +122,7 @@ app.get('/api/walkrequests/open', async (req, res) => {
   }
 });
 
-// Return walker summary with ratings and completed walks
+// Return walker summary and completed walks
 app.get('/api/walkers/summary', async (req, res) => {
   try {
     const [rows] = await db.query(`
