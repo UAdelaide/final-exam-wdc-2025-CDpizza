@@ -4,18 +4,18 @@ const mysql = require('mysql2/promise');
 const app = express();
 const PORT = 3001;
 
-// Database configuration for Docker MySQL
+
 const dbConfig = {
   host: 'localhost',
   port: 3306,
   user: 'root',
-  password: 'root', // Common Docker MySQL default password
+  password: 'root',
   database: 'DogWalkService'
 };
 
 let db;
 
-// Function to insert test data on startup
+
 async function insertTestData(connection) {
   try {
     // Insert users
@@ -28,7 +28,7 @@ async function insertTestData(connection) {
       ('eveowner', 'eve@example.com', 'hashedxyz', 'owner')
     `);
 
-    // Insert dogs
+    
     await connection.query(`
       INSERT IGNORE INTO Dogs (owner_id, name, size) VALUES
       ((SELECT user_id FROM Users WHERE username = 'alice123'), 'Max', 'medium'),
