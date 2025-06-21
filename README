@@ -14,4 +14,4 @@ To test your computer setup.
 
 8. If this worked, then congratulations you are ready to start the exam.
 
-The two parts form a whole. First, open part 1.
+The two parts form a whole. First, open part 1(cd part1/Node.js/Express/app && PORT=3000 npm start)
