@@ -1,1 +1,1 @@
-Please use the command "cd part2 && PORT=3001 npm start". Click to open the web
+Please use the command "cd part1/Node.js/Express/app && PORT=3000 npm start". Click to open the web
